@@ -114,19 +114,19 @@ ScreenCleanerPro/
   "domain": "www.linkedin.com",
   "rules": [
     {
-      "name": "Promoted Posts",
-      "selector": ".feed-shared-update-v2--sponsored",
-      "type": "css"
-    },
-    {
-      "name": "People You May Know",
-      "selector": "//div[contains(@class, 'pymk-list')]",
+      "name": "Home > LinkedIn Footer",
+      "selector": "//footer[@aria-label='LinkedIn Footer Content']/../..",
       "type": "xpath"
     },
     {
-      "name": "LinkedIn Learning Ads",
-      "selector": ".learning-path-entity",
-      "type": "css"
+      "name": "Home > Today's Puzzle games",
+      "selector": "//h2[@id='todays-games-entrypoint-title']/ancestor::div[@class='pv3']/ancestor::div[@class='mb2']",
+      "type": "xpath"
+    },
+    {
+      "name": "Home > Add to your feed",
+      "selector": "//div[@class='feed-follows-module']/ancestor::div[@class='mb2']",
+      "type": "xpath"
     }
   ]
 }
@@ -138,13 +138,13 @@ ScreenCleanerPro/
   "domain": "www.dailyamardesh.com",
   "rules": [
     {
-      "name": "Sidebar Ads",
-      "selector": ".advertisement",
+      "name": "Bottom Anchor Ad",
+      "selector": "div.shadow-anchorAdShadow",
       "type": "css"
     },
     {
-      "name": "Banner Ads",
-      "selector": "//div[@class='banner-ad']",
+      "name": "Header",
+      "selector": "//div[@class='elem1']",
       "type": "xpath"
     }
   ]
@@ -157,13 +157,8 @@ ScreenCleanerPro/
   "domain": "hikmah.net",
   "rules": [
     {
-      "name": "Google Ads",
-      "selector": ".google-ad-container",
-      "type": "css"
-    },
-    {
-      "name": "Popup Overlays",
-      "selector": "//div[contains(@class, 'popup-overlay')]",
+      "name": "You may follow section",
+      "selector": "//h3[normalize-space(text())='You May Follow']/../..",
       "type": "xpath"
     }
   ]
