@@ -56,7 +56,8 @@ ScreenCleanerPro/
 ├── icons/
 │   ├── icon16.png
 │   ├── icon48.png
-│   └── icon128.png
+│   ├── icon128.png
+│   └── icon512.png
 ├── rules/
 │   └── presets.js
 └── README.md
