@@ -41,7 +41,7 @@ Initial Release: v1.0.0
 
 ### 3.1 File Structure
 ```
-screencleanerpro-extension/
+ScreenCleanerPro/
 ├── manifest.json
 ├── background.js (service worker)
 ├── content.js
