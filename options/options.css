@@ -66,6 +66,21 @@ header {
   margin: 0 0 10px 0;
   color: #444;
 }
+#add-rule-btn {
+  margin-bottom: 10px;
+  padding: 6px 16px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#add-rule-btn:hover {
+  background: #1256a3;
+}
 #rule-list {
   list-style: none;
   padding: 0;
@@ -135,11 +150,59 @@ header {
   color: #888;
   margin: 14px 0;
 }
-::-webkit-scrollbar {
-  width: 8px;
-  background: #f4f6fb;
+/* Modal styles */
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  align-items: center;
+  justify-content: center;
 }
-::-webkit-scrollbar-thumb {
-  background: #e3eafc;
-  border-radius: 6px;
+.modal-content {
+  background: #fff;
+  padding: 28px 32px 22px 32px;
+  border-radius: 10px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+  min-width: 320px;
+  max-width: 95vw;
+  position: relative;
+}
+.close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  font-size: 1.5em;
+  color: #888;
+  cursor: pointer;
+}
+#rule-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+#rule-form input[type="text"], #rule-form select {
+  width: 100%;
+  padding: 7px 8px;
+  margin-top: 2px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+#rule-form button[type="submit"] {
+  margin-top: 10px;
+  padding: 8px 20px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#rule-form button[type="submit"]:hover {
+  background: #1256a3;
 }

@@ -2,6 +2,8 @@
 // Firefox-compatible options script
 var browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 var currentDomain = null;
+var domainsCache = {};
+var editingRuleId = null;
 
 function renderDomains(domains) {
   var nav = document.getElementById('domain-tabs');
@@ -35,7 +37,7 @@ function renderRules(domain, domainData) {
     name.textContent = rule.name + ' (' + rule.type + ')';
     var editBtn = document.createElement('button');
     editBtn.textContent = 'Edit';
-    editBtn.onclick = function() { editRule(domain, rule); };
+    editBtn.onclick = function() { openRuleModal('edit', domain, rule); };
     var delBtn = document.createElement('button');
     delBtn.textContent = 'Delete';
     delBtn.onclick = function() {
@@ -48,16 +50,74 @@ function renderRules(domain, domainData) {
   });
 }
 
-function editRule(domain, rule) {
-  // Show edit form (implementation depends on your HTML)
-  // On save, send updateRule message
-  alert('Edit functionality coming soon!');
+function openRuleModal(mode, domain, rule) {
+  var modal = document.getElementById('rule-modal');
+  var title = document.getElementById('modal-title');
+  var form = document.getElementById('rule-form');
+  var nameInput = document.getElementById('rule-name');
+  var selectorInput = document.getElementById('rule-selector');
+  var typeInput = document.getElementById('rule-type');
+  var activeInput = document.getElementById('rule-active');
+  editingRuleId = null;
+  if (mode === 'edit' && rule) {
+    title.textContent = 'Edit Rule';
+    nameInput.value = rule.name;
+    selectorInput.value = rule.selector;
+    typeInput.value = rule.type;
+    activeInput.checked = rule.active !== false;
+    editingRuleId = rule.id;
+  } else {
+    title.textContent = 'Add Rule';
+    nameInput.value = '';
+    selectorInput.value = '';
+    typeInput.value = 'css';
+    activeInput.checked = true;
+    editingRuleId = null;
+  }
+  modal.style.display = 'flex';
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    var ruleData = {
+      name: nameInput.value.trim(),
+      selector: selectorInput.value.trim(),
+      type: typeInput.value,
+      active: activeInput.checked,
+      id: editingRuleId || ('user_' + Date.now() + '_' + Math.floor(Math.random()*10000)),
+      preset: false
+    };
+    if (!ruleData.name || !ruleData.selector) {
+      alert('Name and selector are required.');
+      return;
+    }
+    if (editingRuleId) {
+      browserAPI.runtime.sendMessage({ type: 'updateRule', domain: currentDomain, ruleId: editingRuleId, updates: ruleData }, function() {
+        modal.style.display = 'none';
+        location.reload();
+      });
+    } else {
+      browserAPI.runtime.sendMessage({ type: 'addRule', domain: currentDomain, rule: ruleData }, function() {
+        modal.style.display = 'none';
+        location.reload();
+      });
+    }
+  };
 }
+
+document.getElementById('close-modal').onclick = function() {
+  document.getElementById('rule-modal').style.display = 'none';
+};
+window.onclick = function(event) {
+  var modal = document.getElementById('rule-modal');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   browserAPI.runtime.sendMessage({ type: 'getRules' }, function(resp) {
     var data = resp.data;
     var domains = data.domains;
+    domainsCache = domains;
     var firstDomain = Object.keys(domains)[0];
     currentDomain = firstDomain;
     renderDomains(domains);
@@ -72,6 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
         a.click();
         URL.revokeObjectURL(url);
       });
+    };
+    document.getElementById('add-rule-btn').onclick = function() {
+      openRuleModal('add', currentDomain);
     };
   });
 });

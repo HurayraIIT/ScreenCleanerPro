@@ -15,6 +15,7 @@
     <nav id="domain-tabs"></nav>
     <section id="rules-section">
       <h2>Rules for Selected Domain</h2>
+      <button id="add-rule-btn">+ Add Rule</button>
       <ul id="rule-list"></ul>
       <div id="no-rules-msg" style="display:none;color:#888;text-align:center;margin:16px 0;">No rules for this domain.</div>
     </section>
@@ -23,6 +24,25 @@
       <h3>Help</h3>
       <div>Manage rules for each domain. Add, edit, or delete rules. Export your rules for backup. For more info, see the <a href="../README.md" target="_blank">README</a>.</div>
     </section>
+  </div>
+  <!-- Rule Modal -->
+  <div id="rule-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="close-modal">&times;</span>
+      <h3 id="modal-title">Add/Edit Rule</h3>
+      <form id="rule-form">
+        <label>Name:<br><input type="text" id="rule-name" required></label><br>
+        <label>Selector:<br><input type="text" id="rule-selector" required></label><br>
+        <label>Type:<br>
+          <select id="rule-type">
+            <option value="css">CSS</option>
+            <option value="xpath">XPath</option>
+          </select>
+        </label><br>
+        <label><input type="checkbox" id="rule-active" checked> Active</label><br>
+        <button type="submit" id="save-rule-btn">Save Rule</button>
+      </form>
+    </div>
   </div>
   <script src="options.js"></script>
 </body>
