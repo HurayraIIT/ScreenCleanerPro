@@ -5,15 +5,53 @@ function getDomain() {
   return window.location.hostname;
 }
 
+function hideElement(el) {
+  if (!el.dataset.screencleanerproHidden) {
+    el.dataset.screencleanerproDisplay = el.style.display;
+    el.style.display = 'none';
+    el.dataset.screencleanerproHidden = '1';
+  }
+}
+
+function showElement(el) {
+  if (el.dataset.screencleanerproHidden) {
+    el.style.display = el.dataset.screencleanerproDisplay || '';
+    delete el.dataset.screencleanerproHidden;
+    delete el.dataset.screencleanerproDisplay;
+  }
+}
+
+function highlightElement(el) {
+  el.style.outline = '2px dashed #ff9800';
+}
+
+function removeHighlight(el) {
+  el.style.outline = '';
+}
+
 function applyRules(rules, previewMode) {
   rules.forEach(function(rule) {
-    if (!rule.active) return;
+    if (!rule.active) {
+      // Restore elements if rule is inactive
+      if (rule.type === 'css') {
+        document.querySelectorAll(rule.selector).forEach(showElement);
+      } else if (rule.type === 'xpath') {
+        var xpathResult = document.evaluate(rule.selector, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        for (var i = 0; i < xpathResult.snapshotLength; i++) {
+          var el = xpathResult.snapshotItem(i);
+          if (el) showElement(el);
+        }
+      }
+      return;
+    }
     if (rule.type === 'css') {
       document.querySelectorAll(rule.selector).forEach(function(el) {
         if (previewMode) {
-          el.style.outline = '2px dashed #ff9800';
+          showElement(el);
+          highlightElement(el);
         } else {
-          el.remove();
+          removeHighlight(el);
+          hideElement(el);
         }
       });
     } else if (rule.type === 'xpath') {
@@ -22,9 +60,11 @@ function applyRules(rules, previewMode) {
         var el = xpathResult.snapshotItem(i);
         if (el) {
           if (previewMode) {
-            el.style.outline = '2px dashed #ff9800';
+            showElement(el);
+            highlightElement(el);
           } else {
-            el.remove();
+            removeHighlight(el);
+            hideElement(el);
           }
         }
       }
@@ -34,16 +74,13 @@ function applyRules(rules, previewMode) {
 
 function clearPreview(rules) {
   rules.forEach(function(rule) {
-    if (!rule.active) return;
     if (rule.type === 'css') {
-      document.querySelectorAll(rule.selector).forEach(function(el) {
-        el.style.outline = '';
-      });
+      document.querySelectorAll(rule.selector).forEach(removeHighlight);
     } else if (rule.type === 'xpath') {
       var xpathResult = document.evaluate(rule.selector, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
       for (var i = 0; i < xpathResult.snapshotLength; i++) {
         var el = xpathResult.snapshotItem(i);
-        if (el) el.style.outline = '';
+        if (el) removeHighlight(el);
       }
     }
   });
