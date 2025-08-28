@@ -104,6 +104,23 @@ browserAPI.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     sendResponse({ success: true });
     return true;
   }
+  if (msg.type === 'getRuleMatchCounts' && Array.isArray(msg.rules)) {
+    var counts = msg.rules.map(function(rule) {
+      try {
+        if (rule.type === 'css') {
+          return document.querySelectorAll(rule.selector).length;
+        } else if (rule.type === 'xpath') {
+          var xpathResult = document.evaluate(rule.selector, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+          return xpathResult.snapshotLength;
+        }
+      } catch (e) {
+        return 0;
+      }
+      return 0;
+    });
+    sendResponse({ counts: counts });
+    return true;
+  }
 });
 
 fetchAndApply();

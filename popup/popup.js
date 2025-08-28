@@ -10,6 +10,20 @@ function getDomainFromUrl(url) {
   }
 }
 
+function getMatchCount(rule) {
+  try {
+    if (rule.type === 'css') {
+      return document.querySelectorAll(rule.selector).length;
+    } else if (rule.type === 'xpath') {
+      var xpathResult = document.evaluate(rule.selector, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+      return xpathResult.snapshotLength;
+    }
+  } catch (e) {
+    return 0;
+  }
+  return 0;
+}
+
 function renderRules(domain, domainData, globalEnabled, previewMode) {
   var ruleList = document.getElementById('rule-list');
   var noRulesMsg = document.getElementById('no-rules-msg');
@@ -19,26 +33,36 @@ function renderRules(domain, domainData, globalEnabled, previewMode) {
     return;
   }
   noRulesMsg.style.display = 'none';
-  domainData.rules.forEach(function(rule) {
-    var li = document.createElement('li');
-    var name = document.createElement('span');
-    name.className = 'rule-name';
-    name.textContent = rule.name;
-    var toggle = document.createElement('input');
-    toggle.type = 'checkbox';
-    toggle.className = 'rule-toggle';
-    toggle.checked = rule.active;
-    toggle.setAttribute('aria-label', 'Toggle rule: ' + rule.name);
-    toggle.onchange = function() {
-      browserAPI.runtime.sendMessage({ type: 'updateRule', domain: domain, ruleId: rule.id, updates: { active: toggle.checked } }, function() {
-        browserAPI.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-          browserAPI.tabs.sendMessage(tabs[0].id, { type: 'refreshRules' });
-        });
+  // Request match counts from content script
+  browserAPI.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    browserAPI.tabs.sendMessage(tabs[0].id, { type: 'getRuleMatchCounts', rules: domainData.rules }, function(countsResp) {
+      var counts = (countsResp && countsResp.counts) || [];
+      domainData.rules.forEach(function(rule, idx) {
+        var li = document.createElement('li');
+        var name = document.createElement('span');
+        name.className = 'rule-name';
+        name.textContent = rule.name;
+        var countSpan = document.createElement('span');
+        countSpan.className = 'rule-count';
+        countSpan.textContent = ' (' + (counts[idx] || 0) + ')';
+        var toggle = document.createElement('input');
+        toggle.type = 'checkbox';
+        toggle.className = 'rule-toggle';
+        toggle.checked = rule.active;
+        toggle.setAttribute('aria-label', 'Toggle rule: ' + rule.name);
+        toggle.onchange = function() {
+          browserAPI.runtime.sendMessage({ type: 'updateRule', domain: domain, ruleId: rule.id, updates: { active: toggle.checked } }, function() {
+            browserAPI.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+              browserAPI.tabs.sendMessage(tabs[0].id, { type: 'refreshRules' });
+            });
+          });
+        };
+        li.appendChild(name);
+        li.appendChild(countSpan);
+        li.appendChild(toggle);
+        ruleList.appendChild(li);
       });
-    };
-    li.appendChild(name);
-    li.appendChild(toggle);
-    ruleList.appendChild(li);
+    });
   });
 }
 

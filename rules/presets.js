@@ -25,7 +25,22 @@ var PRESET_RULES = [
         name: "Left Sidebar Org Pages",
         selector: "section.org-organization-admin-pages-entrypoint-card__card",
         type: "css",
-      }
+      },
+      {
+        name: "Left Sidebar links section",
+        selector: "//ul[@class='feed-left-nav-common-module__widgets']/..",
+        type: "xpath",
+      },
+      {
+        name: "Feed > Suggested Post",
+        selector: "//span[normalize-space(.)='Suggested']//ancestor::div[@class='fie-impression-container']",
+        type: "xpath",
+      },
+      {
+        name: "Global Footer",
+        selector: "footer.global-footer",
+        type: "css",
+      },
     ],
   },
   {
