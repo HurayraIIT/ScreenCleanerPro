@@ -1,2 +1,147 @@
 /* popup.css */
 /* ...initial scaffolding... */
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6fb;
+  color: #222;
+  min-width: 300px;
+  min-height: 320px;
+}
+#popup-container {
+  padding: 14px 18px 10px 18px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+#domain-name {
+  font-weight: 600;
+  font-size: 1.08em;
+  color: #1976d2;
+}
+.switch-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
+  user-select: none;
+}
+.switch-label input[type="checkbox"] {
+  display: none;
+}
+.slider {
+  width: 32px;
+  height: 18px;
+  background: #cfd8dc;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+}
+.switch-label input[type="checkbox"]:checked + .slider {
+  background: #1976d2;
+}
+.slider:before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.switch-label input[type="checkbox"]:checked + .slider:before {
+  transform: translateX(14px);
+}
+.switch-text {
+  font-size: 0.98em;
+  color: #1976d2;
+  font-weight: 500;
+}
+#rules-section {
+  margin-bottom: 12px;
+}
+#rules-section h2 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #444;
+}
+#rule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 140px;
+  overflow-y: auto;
+}
+#rule-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.98em;
+  gap: 8px;
+}
+.rule-name {
+  flex: 1;
+  color: #333;
+  font-weight: 500;
+}
+.rule-toggle {
+  accent-color: #1976d2;
+  width: 18px;
+  height: 18px;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.97em;
+  margin-top: 10px;
+}
+footer a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: #e3eafc;
+  transition: background 0.15s;
+}
+footer a:hover {
+  background: #d0dfff;
+}
+#no-rules-msg {
+  font-size: 0.97em;
+  color: #888;
+  margin: 14px 0;
+}
+::-webkit-scrollbar {
+  width: 7px;
+  background: #f4f6fb;
+}
+::-webkit-scrollbar-thumb {
+  background: #e3eafc;
+  border-radius: 6px;
+}

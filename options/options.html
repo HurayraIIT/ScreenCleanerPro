@@ -7,7 +7,23 @@
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <div id="options-root"></div>
+  <div id="options-container">
+    <header>
+      <img src="../icons/icon48.png" alt="ScreenCleanerPro" class="logo">
+      <span class="title">ScreenCleanerPro Options</span>
+    </header>
+    <nav id="domain-tabs"></nav>
+    <section id="rules-section">
+      <h2>Rules for Selected Domain</h2>
+      <ul id="rule-list"></ul>
+      <div id="no-rules-msg" style="display:none;color:#888;text-align:center;margin:16px 0;">No rules for this domain.</div>
+    </section>
+    <button id="export-btn">Export Rules</button>
+    <section id="help-section">
+      <h3>Help</h3>
+      <div>Manage rules for each domain. Add, edit, or delete rules. Export your rules for backup. For more info, see the <a href="../README.md" target="_blank">README</a>.</div>
+    </section>
+  </div>
   <script src="options.js"></script>
 </body>
 </html>

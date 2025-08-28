@@ -7,7 +7,32 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div id="popup-root"></div>
+  <div id="popup-container">
+    <header>
+      <div class="header-main">
+        <img src="../icons/icon48.png" alt="ScreenCleanerPro" class="logo">
+        <span id="domain-name">Domain</span>
+      </div>
+      <label class="switch-label" title="Enable/Disable all rules">
+        <input type="checkbox" id="global-switch">
+        <span class="slider"></span>
+        <span class="switch-text">Global</span>
+      </label>
+    </header>
+    <section id="rules-section">
+      <h2>Rules for this site</h2>
+      <ul id="rule-list"></ul>
+      <div id="no-rules-msg" style="display:none;color:#888;text-align:center;margin:16px 0;">No rules for this domain.</div>
+    </section>
+    <footer>
+      <label class="switch-label" title="Preview mode: highlight elements instead of removing">
+        <input type="checkbox" id="preview-switch">
+        <span class="slider"></span>
+        <span class="switch-text">Preview</span>
+      </label>
+      <a href="#" id="options-link" title="Open advanced options">⚙️ Options</a>
+    </footer>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
